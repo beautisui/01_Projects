@@ -1,36 +1,33 @@
 const bombPosition = "479";
 const winningPosition = 10;
 
-function helpingDesk() {
-  const cellSegment = "There are total 10 cells in the game🎲\n";
-
+function information() {
+  const cellInformation = "There are total 10 cells in the game🎲\n";
   const informAboutBomb = "And 3 positions have Bomb💣\n";
+  const winningMsg = "If you overcome all the bomb and reached the winningPosition you will be winner🏆 \n";
 
-  const winningMsgSegment = "If you overcome all the bomb and reached the winningPosition you will be winner🏆 \n";
-
-  const message = cellSegment + informAboutBomb + winningMsgSegment;
-
-  console.log(message);
+  return cellInformation + informAboutBomb + winningMsg;
 }
 
-function greetAndInfromRule() {
-  console.log("\n         ******WelCome To Bomb Dice Game****** \n");
+function greet() {
+  return "\n         ******WelCome To Magic Mine****** \n";
 }
 
-function isInDenger(diceNumber) {
+function isInDanger(diceNumber) {
   for (let offset = 0; offset < bombPosition.length; offset++) {
     if (+bombPosition[offset] === diceNumber) {
-      console.log("Bomb Blust:💣🔥", diceNumber);
-      console.log("Begin from start position:😈");
+      console.log("Bomb Blust:💣🔥", diceNumber + "\nBegin from start position:😈");
       return true;
     }
   }
 
   console.log("You are safe now😮‍💨");
+
   return false;
 }
 
-function rollTheDice(diceNumber) {
+function startTheGame(point) {
+  let diceNumber = point;
   console.log(" ");
 
   if (diceNumber === winningPosition) {
@@ -38,39 +35,36 @@ function rollTheDice(diceNumber) {
   }
 
   prompt("\nRoll The Dice !!!");
-  const diceRandomPoint = (Math.round(Math.random() * 10) % 6) + 1;
+  const diceRandomPoint = 1 + Math.round(Math.random() * 10) % 6;
 
   console.log("Your dice number is:", diceRandomPoint);
 
   diceNumber += ((diceNumber + diceRandomPoint) <= winningPosition) ? diceRandomPoint : 0;
 
-  console.log("Now Your CurrentPossition is :", diceNumber)
+  console.log("Now Your CurrentPossition is :", diceNumber);
 
-  if (isInDenger(diceNumber)) {
+  if (isInDanger(diceNumber)) {
     diceNumber = 0;
   }
-  return rollTheDice(diceNumber);
+  return startTheGame(diceNumber);
 }
 
 function askToPlayAgain() {
   if (confirm("Would you like to play again")) {
     return diceGame();
-  } else {
-    console.log("\n Good Bye...Thank You for Your time🤗");
   }
 }
-greetAndInfromRule();
-helpingDesk();
+
+console.log(greet());
+console.log(information());
 
 function diceGame() {
   console.log("\n            let's start✊ \n");
-  console.log(rollTheDice(0));
+  console.log(startTheGame(0));
   askToPlayAgain();
 }
 
 if (confirm("Do you want to play The game:🤩")) {
   diceGame();
   console.log("___________________________GAME OVER_________________________");
-} else {
-  console.log("Good Bye✌️");
 }
