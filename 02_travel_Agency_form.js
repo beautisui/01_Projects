@@ -6,23 +6,22 @@ console.log("\n----------🤝🤝🤝WELCOME TO HAPPY TRAVELLING🤝🤝🤝----
 newLine();
 
 const customerName = prompt("   Enter your Name:");
-const gender = prompt("   Enter your Gender:");
+const gender = prompt("   Enter your Gender:").toLowerCase();
 const cityName = prompt("   Enter your City:");
+const askingToTravel = confirm("   Want to refresh your mind By travelling?");
 
 function greet() {
   newLine();
   let welcomeMsg = "   Welcome ";
   let msgSegment = " To our Happy Travel Agency";
 
-  console.log(welcomeMsg + customerName + msgSegment);
-  newLine();
+  return welcomeMsg + customerName + msgSegment;
 }
-
-const askingToTravel = confirm("   Want to refresh your mind By travelling?");
 
 function isHyphen(char) {
   return char === "-";
 }
+
 function isCharInDigit(char) {
   return char >= '0' && char <= '9';
 }
@@ -83,7 +82,6 @@ function isValidYear(year) {
   return year > 0;
 }
 
-
 function isDayMonthYearValid(bookinDate) {
   const year = +slice(bookinDate, 0, 3);
   const month = +slice(bookinDate, 5, 6);
@@ -93,10 +91,12 @@ function isDayMonthYearValid(bookinDate) {
   return isMonthAndYearValid && isValidDay(year, month, day);
 }
 
+function askJourneyDate() {
+  return prompt("   Enter date of Journey in YYYY-MM-DD :");
+}
 function confirmationDeatalis() {
-  console.log("   Enter Journey Date \n");
+  const bookinDate = askJourneyDate();
 
-  const bookinDate = prompt("   Enter date in YYYY-MM-DD :");
   if (isDateValid("YYYY-MM-DD", bookinDate)); {
     if (isDayMonthYearValid(bookinDate)) {
       console.log('   Congratulations: ' + customerName);
@@ -122,10 +122,12 @@ function trim(text, start, end) {
   return trim(text, start + 1, end);
 }
 
+function askTotalTravellor() {
+  return prompt("   Please select the number of travellers:🤓");
+}
+
 function selectMember() {
-  const travelMember = prompt("   Please select the number of travellers:🤓");
-  console.log("   There are total " + (+travelMember + 1) + " including You!");
-  console.log("   Thank you for confirmation!🤗");
+  const travelMember = askTotalTravellor();
 
   return +travelMember + 1;
 }
@@ -135,10 +137,14 @@ function isAadharValid(enterAadhar) {
     return trim(enterAadhar, 0, 11);
   }
   return false;
-
 }
+
+function askingForAadhar() {
+  return prompt("   Enter Aadhar Number :");
+}
+
 function takeAadharNumber() {
-  const enterAadhar = prompt("   Enter Aadhar Number :");
+  const enterAadhar = askingForAadhar();
 
   if (isAadharValid(enterAadhar)) {
     console.log('   Aadhar verificaton Done✔️!');
@@ -147,6 +153,7 @@ function takeAadharNumber() {
     newLine();
     return takeAadharNumber();
   }
+
   return enterAadhar;
 }
 
@@ -154,11 +161,16 @@ function isPhoneNumerValid(mobileNumber) {
   if (mobileNumber.length === 10) {
     return trim(mobileNumber, 0, 9);
   }
+
   return false;
 }
 
+function askMobileNumber() {
+  return prompt("\n   Enter Mobile Number:");
+}
+
 function takePhoneNumber() {
-  const mobileNumber = prompt("\n   Enter Mobile Number:");
+  const mobileNumber = askMobileNumber();
 
   if (isPhoneNumerValid(mobileNumber)) {
     console.log("   Number verification done✔️ ");
@@ -174,10 +186,15 @@ function registrationProcess() {
   newLine();
 }
 
+function askForPlace() {
+  return prompt('\n   Select from the avove places🤩:');
+}
+
 function selectPlaces() {
-  const selectedPlace = prompt('\n   🟡Write the Name of the Place where you want to Travel🤩:');
+  const selectedPlace = askForPlace();
   newLine();
   console.log("   Thank you");
+
   return selectedPlace;
 }
 
@@ -202,8 +219,11 @@ function adventureTourism() {
   console.log("               3. Machu Picchu");
 }
 
+function chooseTravelType() {
+  return prompt('\n   Please select option for travel:');
+}
 function selectTravelPlaces() {
-  const chooseToTravel = prompt('\n   Please select option for travel:');
+  const chooseToTravel = chooseTravelType();
   newLine();
 
   if (chooseToTravel === '1') {
@@ -228,30 +248,23 @@ function travelOption() {
   const option3 = "         3. Religious tourism\n";
   const messageSegment = askingTypeOfTravel + option1 + option2 + option3;
 
-  return console.log(available + messageSegment);
+  return available + messageSegment;
 }
 
-function askOpinion() {
+function startingMsg() {
   newLine();
-  console.log("             ******Let's Enjoy By Travel!******* \n");
+  return "             ******Let's Enjoy By Travel!******* \n";
 }
 
-function createBill(tourismType, dateOfTravel, totalTravellor) {
-  let bill = '\n   Customer Name: ' + customerName;
-  bill += '\n   Type of tourism selected:' + tourismType;
-  bill += '\n   Date of travel:' + dateOfTravel;
-  bill += '\n   Number of Travellor:' + totalTravellor;
-  console.log(bill);
-}
 function tourismTypeForBill(tourismTypeCode) {
-  if (tourismTypeCode === "1") {
-    return "Adventure ";
+  if (tourismTypeCode === 1) {
+    return "Adventure";
   }
-  return tourismTypeCode === "2" ? "Bussiness" : "Religious";
+  return tourismTypeCode === 2 ? "Bussiness" : "Religious";
 }
 
 function giveHonorifics(gender) {
-  if (gender === "Female") {
+  if (gender === "female" || 'f') {
     return "Ms. " + customerName;
   }
   return "Mr. " + customerName;
@@ -275,7 +288,7 @@ function agencyDetails() {
   newLine();
 }
 function customerDetails(phNo, aadharNo, name, tourType, travelDate, noOfTravellor, travelPlace) {
-  console.log("               ✻✼...APPROVED...✻✼                               ");
+  console.log("               ✼✻✼...APPROVED...✻✼✼                               ");
   newLine();
   newLine();
   console.log("   -------------------Customer Details Section----------------");
@@ -288,28 +301,103 @@ function customerDetails(phNo, aadharNo, name, tourType, travelDate, noOfTravell
   console.log("   From : " + cityName + '                    ' + "To : " + travelPlace);
   console.log("   ----------------------------------------------------------");
   newLine();
+  newLine();
+}
+
+function travelFee(place) {
+  if (place === "Ladakh" || place === "Tirupati balaji" || place === "Varanasi") {
+    return 3999;
+  }
+  if (place === "Petra" || place === "Ayodhya Ram Janmabhoomi") {
+    return 2999;
+  }
+  if (place === "San Francisco" || place === "London" || place === "New York") {
+    return 19999;
+  }
+  return 1599;
+}
+
+function billForTravel(price, member) {
+  const perHeadCost = price;
+  const includeGstCharge = Math.round(perHeadCost * 5 / 100) + perHeadCost;;
+  newLine();
+  console.log("-_-_-_-_-_-_-_-_-_-_--_-_-BILL-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_");
+  newLine();
+  console.log("   Dear. " + customerName);
+  console.log("   TravelCost/per :" + perHeadCost + "/-");
+  console.log("   GST Charge - 5%" + '                      ' + "Total Member : " + member);
+  console.log("   Total Bill :" + includeGstCharge * member);
+  console.log("-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_");
+  newLine();
   console.log("                         VISIT AGAIN                    ");
   newLine();
-
 }
-function happyTravelFormDetails() {
-  if (!askingToTravel) {
-    console.log("   Oops!😕 “Live, travel, adventure, bless, and don’t be sorry.”\n ");
-    return;
+
+function getAdvanturalPlace(tourismCode) {
+  if (tourismCode === 1) {
+    return "Ladakh";
   }
-  greet();
-  askOpinion();
-  travelOption();
+  if (tourismCode === 2) {
+    return "Petra";
+  }
+  return "Machu Picchu";
+}
+
+function getBussinessPlaces(tourismCode) {
+  if (tourismCode === 1) {
+    return "New York";
+  }
+  if (tourismCode === 2) {
+    return "San Francisco";
+  }
+  return "London";
+}
+
+function getReligiousPlace(tourismCode) {
+  if (tourismCode === 1) {
+    return "Tirupati Balaji";
+  }
+  if (tourismCode === 2) {
+    return "Ayodhya Ram Janmabhoomi";
+  }
+  return "Varanasi";
+}
+
+function destinationPlace(tourismCode, placeCode) {
+  const tourType = tourismTypeForBill(tourismCode);
+
+  if (tourType === "Adventure") {
+    return getAdvanturalPlace(placeCode);
+  }
+
+  if (tourType === "Bussiness") {
+    return getBussinessPlaces(placeCode);
+  }
+
+  return getReligiousPlace(placeCode);
+}
+
+function happyTravelFormDetails() {
+  console.log(greet());
+  console.log(startingMsg());
+  console.log(travelOption());
   const tourismTypeCode = selectTravelPlaces();
   const tourismType = tourismTypeForBill(+tourismTypeCode);
-  const selectedPlaceForTravel = selectPlaces();
+  const selectedPlaceCode = selectPlaces();
+  const destination = destinationPlace(+tourismTypeCode, +selectedPlaceCode);
   const totalTravellor = selectMember();
   const dateOfTravel = confirmationDeatalis();
   const nameWithTitle = giveHonorifics(gender);
   const phNumber = takePhoneNumber();
   const aadharNumber = takeAadharNumber();
   agencyDetails();
-  customerDetails(phNumber, aadharNumber, nameWithTitle, tourismType, dateOfTravel, totalTravellor, selectedPlaceForTravel);
+  customerDetails(phNumber, aadharNumber, nameWithTitle, tourismType, dateOfTravel, totalTravellor, destination);
+  const travelCost = travelFee(selectedPlaceCode);
+  billForTravel(travelCost, totalTravellor);
 }
 
-happyTravelFormDetails();
+if (!askingToTravel) {
+  console.log("   Oops!😕 “Live, travel, adventure, bless, and don’t be sorry.”\n ");
+} else {
+  happyTravelFormDetails();
+}
