@@ -9,7 +9,7 @@ function offerAgain() {
 }
 
 function isInRange(number, start, end) {
-  return number >= start && number <= end;
+  return number >= start && number < end;
 }
 
 function givingHints(userNumber, guessingNumber) {
@@ -22,21 +22,26 @@ function givingHints(userNumber, guessingNumber) {
 
 function informGameOver() {
   console.log("Oh no! You've used all your attempts. Better luck next time!");
+
   return offerAgain();
 }
 
 function congratsMsg(randomNumber) {
   console.log("Bravo! You've nailed it. The number was " + randomNumber + "!");
+
   return offerAgain();
 }
 
-function informResultAndTriesLeft(start, end, remainingAttempts, randomNumber) {
+function askForGuess(remainingAttempts) {
+  return prompt("Take a guess! (Remaining attemps: " + remainingAttempts + ")");
+}
 
+function informResultAndTriesLeft(start, end, remainingAttempts, randomNumber) {
   if (remainingAttempts === 0) {
     return informGameOver();
   }
 
-  const userInput = prompt("Take a guess! (Remaining attemps: " + remainingAttempts + ") ");
+  const userInput = askForGuess(remainingAttempts);
 
   if (!isInRange(+userInput, start, end)) {
     console.log("invalid input! Please enter a number.\n ");
@@ -53,19 +58,21 @@ function informResultAndTriesLeft(start, end, remainingAttempts, randomNumber) {
 }
 
 function greetAndInformMsg(rangeStart, rangeEnd, maxAttempts) {
-  console.log("\n Welcome to Guess the Number! \n");
-  console.log("The secret number is between " + rangeStart + " to " + rangeEnd
-    + "." + " You have " + maxAttempts + " attempts to find it.\n");
+  const welcome = "\n Welcome to Guess the Number! \n";
+  const gameInformation = " The secret number is between " + rangeStart + " to " + rangeEnd
+    + "." + " You have " + maxAttempts + " attempts to find it.\n";
+
+  return welcome + gameInformation;
 }
 
 function genarateRandomNumber(rangeStart, rangeEnd) {
   const rangeDiff = rangeStart - rangeEnd;
 
-  return rangeStart + (Math.round(Math.random() * rangeStart) % rangeDiff);
+  return rangeStart + (Math.floor(Math.random() * rangeStart) % rangeDiff);
 }
 
 function startGame(rangeStart, rangeEnd, maxAttempts) {
-  greetAndInformMsg(rangeStart, rangeEnd, maxAttempts);
+  console.log(greetAndInformMsg(rangeStart, rangeEnd, maxAttempts));
   const randomNumber = genarateRandomNumber(rangeStart, rangeEnd);
   informResultAndTriesLeft(rangeStart, rangeEnd, maxAttempts, randomNumber);
 }
