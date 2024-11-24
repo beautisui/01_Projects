@@ -71,9 +71,9 @@ function animation(faceValue) {
   return creatDiceFace(faceValue);
 }
 
-function boxDrawing() {
+function diceDrawing() {
   const faceValue = randomNumber();
   console.log(animation(faceValue));
 }
 
-boxDrawing();
+diceDrawing();
