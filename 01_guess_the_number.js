@@ -20,8 +20,9 @@ function givingHints(userNumber, guessingNumber) {
   return userNumber + " Too high! Try a smaller number \n";
 }
 
-function informGameOver() {
+function informGameOver(randomNumber) {
   console.log("Oh no! You've used all your attempts. Better luck next time!");
+  console.log("The Number Was: ", randomNumber + " 👧");
 
   return offerAgain();
 }
@@ -38,7 +39,7 @@ function askForGuess(remainingAttempts) {
 
 function informResultAndTriesLeft(start, end, remainingAttempts, randomNumber) {
   if (remainingAttempts === 0) {
-    return informGameOver();
+    return informGameOver(randomNumber);
   }
 
   const userInput = askForGuess(remainingAttempts);
