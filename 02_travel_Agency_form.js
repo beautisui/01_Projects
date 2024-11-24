@@ -6,7 +6,7 @@ console.log("\n----------🤝🤝🤝WELCOME TO HAPPY TRAVELLING🤝🤝🤝----
 newLine();
 
 const customerName = prompt("   Enter your Name:");
-const gender = prompt("   Enter your Gender:").toLowerCase();
+const gender = prompt("   Enter your Gender F/M:");
 const cityName = prompt("   Enter your City:");
 const askingToTravel = confirm("   Want to refresh your mind By travelling?");
 
@@ -129,7 +129,7 @@ function askTotalTravellor() {
 function selectMember() {
   const travelMember = askTotalTravellor();
 
-  return +travelMember + 1;
+  return +travelMember;
 }
 
 function isAadharValid(enterAadhar) {
@@ -264,7 +264,7 @@ function tourismTypeForBill(tourismTypeCode) {
 }
 
 function giveHonorifics(gender) {
-  if (gender === "female" || 'f') {
+  if (gender === "F" || gender === "f") {
     return "Ms. " + customerName;
   }
   return "Mr. " + customerName;
@@ -287,12 +287,12 @@ function agencyDetails() {
   newLine();
   newLine();
 }
-function customerDetails(phNo, aadharNo, name, tourType, travelDate, noOfTravellor, travelPlace) {
+function customerDetails(phNo, aadharNo, name, tourType, travelDate, noOfTraveller, travelPlace) {
   console.log("               ✼✻✼...APPROVED...✻✼✼                               ");
   newLine();
   newLine();
   console.log("   -------------------Customer Details Section----------------");
-  console.log("   Name: " + name + '                  ' + "No. of Travellor : " + noOfTravellor);
+  console.log("   Name: " + name + '                  ' + "No. of Traveller : " + noOfTraveller);
   console.log("   ----------------------------------------------------------");
   console.log("   Ph No. : " + phNo + '               ' + "Tourism Type : " + tourType);
   console.log("   ----------------------------------------------------------");
@@ -317,7 +317,7 @@ function travelFee(place) {
   return 1599;
 }
 
-function billForTravel(price, member) {
+function billForTravel(price, traveller) {
   const perHeadCost = price;
   const includeGstCharge = Math.round(perHeadCost * 5 / 100) + perHeadCost;;
   newLine();
@@ -325,8 +325,8 @@ function billForTravel(price, member) {
   newLine();
   console.log("   Dear. " + customerName);
   console.log("   TravelCost/per :" + perHeadCost + "/-");
-  console.log("   GST Charge - 5%" + '                      ' + "Total Member : " + member);
-  console.log("   Total Bill :" + includeGstCharge * member);
+  console.log("   GST Charge - 5%" + '                      ' + "Total Traveller : " + traveller);
+  console.log("   Total Bill :" + includeGstCharge * traveller);
   console.log("-_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_--_-_-_-_-_-_-_-_-_-_");
   newLine();
   console.log("                         VISIT AGAIN                    ");
