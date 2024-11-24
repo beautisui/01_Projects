@@ -5,6 +5,7 @@ function repeat(string, times) {
   if (times === 0) {
     return "";
   }
+
   return string + repeat(string, times - 1);
 }
 
@@ -14,6 +15,7 @@ function creatBorder(left, middle, right) {
 
 function header() {
   const line = repeat("━", 50);
+
   return creatBorder("┏", line, "┓");
 }
 
@@ -33,22 +35,18 @@ function middle(position) {
 
     middleLine += repeat(" 🟢 ┃", 1);
   }
-  if (position === 10) {
-    return middleLine += repeat(" 👧  ┃", 1)
-  }
 
-  return middleLine += repeat(" 🏆  ┃", 1);
+  return middleLine += (position === 10) ? " 👧  ┃" : " 🏆  ┃";
 }
 
 function footer() {
   const line = repeat("━", 50);
+
   return creatBorder("┗", line, "┛");
 }
 
 function boxDrawing(diceNumber) {
-  console.log(header());
-  console.log(middle(diceNumber));
-  console.log(footer());
+  return header() + '\n' + middle(diceNumber) + '\n' + footer();
 }
 
 function information() {
@@ -91,7 +89,7 @@ function startTheGame(point) {
 
   diceNumber += ((diceNumber + diceRandomPoint) <= winningPosition) ? diceRandomPoint : 0;
 
-  boxDrawing(diceNumber);
+  console.log(boxDrawing(diceNumber));
 
   console.log("Now Your CurrentPossition is :", diceNumber);
 
@@ -109,7 +107,7 @@ function askToPlayAgain() {
 
 console.log(greet());
 console.log(information());
-boxDrawing();
+console.log(boxDrawing());
 
 function diceGame() {
   console.log("\n            let's start✊ \n");
