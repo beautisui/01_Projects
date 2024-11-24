@@ -187,7 +187,7 @@ function registrationProcess() {
 }
 
 function askForPlace() {
-  return prompt('\n   Select from the avove places🤩:');
+  return prompt('\n   Select from the above places🤩:');
 }
 
 function selectPlaces() {
@@ -392,7 +392,7 @@ function happyTravelFormDetails() {
   const aadharNumber = takeAadharNumber();
   agencyDetails();
   customerDetails(phNumber, aadharNumber, nameWithTitle, tourismType, dateOfTravel, totalTravellor, destination);
-  const travelCost = travelFee(selectedPlaceCode);
+  const travelCost = travelFee(destination);
   billForTravel(travelCost, totalTravellor);
 }
 
@@ -400,4 +400,4 @@ if (!askingToTravel) {
   console.log("   Oops!😕 “Live, travel, adventure, bless, and don’t be sorry.”\n ");
 } else {
   happyTravelFormDetails();
-}
+}               
