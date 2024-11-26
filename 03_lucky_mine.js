@@ -6,7 +6,7 @@ const PIPE_ICON = "┃";
 const BORDER_LENGTH = 20;
 const GRID_SEPARATOR = PIPE_ICON + "  ";
 const WINNING_POSITION = 20;
-const BOMB_LOCATION = "4,7,9,13,16,19";
+const BOMB_LOCATION = "4,7";
 const DASH_LENGTH = 100;
 
 function isSubStr(string, subString) {
@@ -92,7 +92,7 @@ function getMineField(playerPosition) {
     grid += GRID_SEPARATOR;
     grid += createCell(index, playerPosition);
   }
-  return createGrid(grid);
+  console.log(createGrid(grid));
 }
 
 function gameInformationMsg() {
@@ -104,25 +104,22 @@ function gameInformationMsg() {
 }
 
 function welcomemsg() {
-  return "\n         ******WelCome To Magic Mine****** \n";
+  console.log("\n         ******WelCome To Magic Mine****** \n");
 }
 
 function blastMsg() {
-  return "Bomb Blast💣🔥" + "\nRestart the Game:😈";
+  console.log("Bomb Blast💣🔥" + "\nRestart the Game:😈");
 }
 
 function safeMsg() {
-  return "You are safe now😮‍💨";
+  console.log("You are safe now😮‍💨");
 }
 
 function isInDanger(diceNumber) {
-  if (isSubStr(BOMB_LOCATION, diceNumber + '')) {
-    console.log(blastMsg());
-    return true;
-  }
+  const isInBombPosition = isSubStr(BOMB_LOCATION, diceNumber + '');
+  isInBombPosition ? blastMsg() : safeMsg();
 
-  console.log(safeMsg());
-  return false;
+  return isInBombPosition;
 }
 
 function getRandomNumber() {
@@ -130,19 +127,23 @@ function getRandomNumber() {
 }
 
 function informPlayerPosition(diceNumber) {
-  return "Now Your CurrentPosition is :" + diceNumber;
+  console.log("Now Your CurrentPosition is :" + diceNumber);
 }
 
-function diceNumberToAppend(diceNumber, diceRandomPoint) {
+function diceNumberToAdd(diceNumber, diceRandomPoint) {
   return diceNumber + diceRandomPoint <= WINNING_POSITION ? diceRandomPoint : 0;
 }
 
 function winningMsg() {
-  return "Yay!!! You win the Game🥳🏆 \n"
+  return "Yay!!! You win the Game🥳🏆 \n";
 }
 
 function informDiceNumber(diceRandomPoint) {
-  return "Your dice number is:" + diceRandomPoint;
+  console.log("Your dice number is:" + diceRandomPoint);
+}
+
+function isPlayerInWinningPossition(diceNumber, WINNING_POSITION) {
+  return diceNumber === WINNING_POSITION;
 }
 
 function startTheGame(point) {
@@ -150,18 +151,17 @@ function startTheGame(point) {
   let diceNumber = point;
   console.log(" ");
 
-  if (diceNumber === WINNING_POSITION) {
+  if (isPlayerInWinningPossition(diceNumber, WINNING_POSITION)) {
     return winningMsg();
   }
 
   prompt("\nPress Enter to Roll The Dice !!!");
 
-  console.log(informDiceNumber(diceRandomPoint));
+  informDiceNumber(diceRandomPoint);
+  diceNumber += diceNumberToAdd(diceNumber, diceRandomPoint);
 
-  diceNumber += diceNumberToAppend(diceNumber, diceRandomPoint);
-
-  console.log(getMineField(diceNumber));
-  console.log(informPlayerPosition(diceNumber));
+  getMineField(diceNumber);
+  informPlayerPosition(diceNumber);
 
   if (isInDanger(diceNumber)) {
     diceNumber = 0;
@@ -174,7 +174,7 @@ function isOfferAccepted() {
   return confirm("Would you like to play again?");
 }
 
-function offerAgain() {
+function askToPlay() {
   if (isOfferAccepted()) {
     return diceGame();
   }
@@ -183,20 +183,21 @@ function offerAgain() {
 function diceGame() {
   console.log("\n            let's start✊ \n");
   console.log(startTheGame(0));
-  offerAgain();
+  askToPlay();
 }
 
 function offerToPlay() {
   if (confirm("Do you want to play The game:🤩?")) {
     diceGame();
-    console.log("___________________________GAME OVER_________________________");
+    console.log("\n___________________________GAME OVER_________________________");
   }
 }
-function startGame() {
-  console.log(welcomemsg());
+
+function guessTheNumberInRange() {
+  welcomemsg();
   console.log(gameInformationMsg());
-  console.log(getMineField());
+  getMineField();
   offerToPlay();
 }
 
-startGame();
+guessTheNumberInRange();
