@@ -1,11 +1,10 @@
 console.log("__________________:WELCOME TO GUESS THE NUMBER:_________________");
 
-function offerAgain() {
-  if (confirm("Do you want to play again!")) {
-    return startGame(500, 600, 6);
-  } else {
-    console.log("Good Bye!");
+function askToPlay() {
+  if (confirm("Do you want to play again?")) {
+    return guessTheNumberInRange(500, 600, 6);
   }
+  console.log("Good Bye!!!");
 }
 
 function isInRange(number, start, end) {
@@ -16,66 +15,81 @@ function givingHints(userNumber, guessingNumber) {
   if (userNumber < guessingNumber) {
     return userNumber + " Too low! Try a higher number \n";
   }
-
   return userNumber + " Too high! Try a smaller number \n";
 }
 
-function informGameOver(randomNumber) {
-  console.log("Oh no! You've used all your attempts. Better luck next time!");
-  console.log("The Number Was: ", randomNumber + " 👧");
+function gameOverMsg(randomNumber) {
+  const noAttemptLeftMsg = "Oh no! You've used all your attempts. Better luck next time!😕";
+  const informTheRandomNumber = "The Number Was: " + randomNumber + " 👧";
 
-  return offerAgain();
+  console.log(noAttemptLeftMsg + informTheRandomNumber);
 }
 
 function congratsMsg(randomNumber) {
-  console.log("Bravo! You've nailed it. The number was " + randomNumber + "!");
-
-  return offerAgain();
+  console.log("Bravo! You've nailed it🥳. The number was " + randomNumber + "!");
 }
 
 function askForGuess(remainingAttempts) {
-  return prompt("Take a guess! (Remaining attemps: " + remainingAttempts + ")");
+  return +prompt("Take a guess! (Remaining attemps: " + remainingAttempts + ")");
 }
 
-function informResultAndTriesLeft(start, end, remainingAttempts, randomNumber) {
-  if (remainingAttempts === 0) {
-    return informGameOver(randomNumber);
-  }
-
-  const userInput = askForGuess(remainingAttempts);
-
-  if (!isInRange(+userInput, start, end)) {
-    console.log("invalid input! Please enter a number.\n ");
-    return informResultAndTriesLeft(start, end, remainingAttempts, randomNumber);
-  }
-
-  if (+userInput === randomNumber) {
-    return congratsMsg(randomNumber);
-  } else {
-    console.log(givingHints(+userInput, +randomNumber));
-  }
-
-  return informResultAndTriesLeft(start, end, remainingAttempts - 1, randomNumber);
+function isNoAtteptsLeft(remainingAttempts) {
+  return remainingAttempts === 0;
 }
 
-function greetAndInformMsg(rangeStart, rangeEnd, maxAttempts) {
-  const welcome = "\n Welcome to Guess the Number! \n";
+function invalidInputMsg() {
+  console.log("invalid input! Please enter a number.\n ");
+}
+
+function isGuessCorrect(originalNumber, guessingNumber) {
+  return originalNumber === guessingNumber;
+}
+
+function gameStart(start, end, remainingAttempts, randomNumber) {
+
+  if (isNoAtteptsLeft(remainingAttempts)) {
+    gameOverMsg(randomNumber);
+    return askToPlay();
+  }
+
+  const userGuess = askForGuess(remainingAttempts);
+
+  if (!isInRange(userGuess, start, end)) {
+    invalidInputMsg();
+    return gameStart(start, end, remainingAttempts, randomNumber);
+  }
+
+  if (isGuessCorrect(userGuess, randomNumber)) {
+    congratsMsg(randomNumber);
+    return askToPlay();
+  }
+
+  console.log(givingHints(userGuess, randomNumber));
+
+  return gameStart(start, end, remainingAttempts - 1, randomNumber);
+}
+
+function welcomemsg() {
+  return "\n Welcome to Guess the Number! \n";
+}
+
+function informationOfGame(rangeStart, rangeEnd, maxAttempts) {
   const gameInformation = " The secret number is between " + rangeStart + " to " + rangeEnd
     + "." + " You have " + maxAttempts + " attempts to find it.\n";
 
-  return welcome + gameInformation;
+  return gameInformation;
 }
 
 function genarateRandomNumber(rangeStart, rangeEnd) {
   const rangeDiff = rangeStart - rangeEnd;
-
   return rangeStart + (Math.floor(Math.random() * rangeStart) % rangeDiff);
 }
 
-function startGame(rangeStart, rangeEnd, maxAttempts) {
-  console.log(greetAndInformMsg(rangeStart, rangeEnd, maxAttempts));
+function guessTheNumberInRange(rangeStart, rangeEnd, maxAttempts) {
+  console.log(welcomemsg());
+  console.log(informationOfGame(rangeStart, rangeEnd, maxAttempts));
   const randomNumber = genarateRandomNumber(rangeStart, rangeEnd);
-  informResultAndTriesLeft(rangeStart, rangeEnd, maxAttempts, randomNumber);
+  gameStart(rangeStart, rangeEnd, maxAttempts, randomNumber);
 }
 
-startGame(100, 200, 6);
+guessTheNumberInRange(100, 200, 6);
