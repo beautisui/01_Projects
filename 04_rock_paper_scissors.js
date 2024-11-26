@@ -1,91 +1,103 @@
-const computerWinningMsg = "   Computer Win😕";
-const userWinningMSg = "   You win the game 🤩";
+const ROCK = 0;
+const PAPER = 1;
+const SCISSOR = 2;
 
-function greet() {
-  const gameName = "_-_-_-_-_-_-_-_-_-_-_-_-WELCOME TO STONE_PAPER_SCISSORS GAME_-_-_-_-_-_-_-_-_-_-_-_-    ";
+const DRAWN_MSG = "Tie Play again!!!\n";
+const PLAYER_WON_MSG = "You win the game 🤩\n";
+const COMPUTER_WON_MSG = "Computer Win😕\n";
+const LINE_BREAK = "\n\n";
+
+function showWelcomeMsg() {
+  console.log("_-_-_-_-_-_-_-_-_-_-_-_-WELCOME TO STONE_PAPER_SCISSORS GAME_-_-_-_-_-_-_-_-_-_-_-_-    ");
+}
+
+function getGameDescription() {
   const description = "      🟢GAME DESCRIPTION🟢 ";
   let gameInformation = "  •Rock beats scissors.";
   gameInformation += "\n  •Scissors beat paper.";
   gameInformation += "\n  •Paper beats rock.";
   gameInformation += "\n  •If both players choose the same  signal, it's a tie.";
-  return "\n\n" + gameName + "\n\n" + description + "\n\n" + gameInformation + "\n\n";
+
+  return LINE_BREAK + description + LINE_BREAK + gameInformation + LINE_BREAK;
 }
 
-function userInput() {
-  return prompt("   Enter your choise:");
+function isInputValid(choice) {
+  return choice === ROCK || choice === PAPER || choice === SCISSOR;
 }
 
-function computerInput() {
-  return 1 + Math.floor(Math.random() * 10) % 3;
-}
-
-function options() {
-  const rock = "   1. Rock 🪨";
-  const paper = "   2. Paper📝";
-  const scissors = "   3. Scissors✂️";
-
-  return rock + "\n" + paper + "\n" + scissors + "\n";
-}
-
-function getResultForUsersScissors(computerChoise) {
-  if (computerChoise === 1) {
-    return computerWinningMsg;
+function getUserInput() {
+  let isValidInput = false;
+  let choice = "";
+  while (!isValidInput) {
+    choice = +prompt("Enter your choice: ");
+    isValidInput = isInputValid(choice)
   }
-  return userWinningMSg;
+  return choice;
 }
 
-function getResultForUsersPaper(computerChoise) {
-  if (computerChoise === 1) {
-    return userWinningMSg;
-  }
-  return computerWinningMsg;
+function getComputerInput(rangeStart, rangeEnd) {
+  const rangeDiff = rangeStart - rangeEnd;
+  return rangeStart + (Math.floor(Math.random() * rangeStart) % rangeDiff);
 }
 
-function getResultForUsersRock(computerChoise) {
-  if (computerChoise === 2) {
-    return computerWinningMsg;
-  }
-  return userWinningMSg;
+function isDrawn(userInput, computerChoice) {
+  return userInput === computerChoice;
 }
 
-function gameResult(userChoice, computerChoice) {
-  switch (userChoice) {
-    case 1:
-      return getResultForUsersRock(computerChoice);
-    case 2:
-      return getResultForUsersPaper(computerChoice);
-    case 3:
-      return getResultForUsersScissors(computerChoice);
-  }
+function rockBeatsScissor(userInput, computerChoice) {
+  return userInput === ROCK && computerChoice === SCISSOR;
+}
+
+function paperBeatsRock(userInput, computerChoice) {
+  return userInput === PAPER && computerChoice === ROCK;
+}
+
+function scissorBeatsRock(userInput, computerChoice) {
+  return userInput === SCISSOR && computerChoice === ROCK;
+}
+
+function isPlayerWon(userInput, computerChoice) {
+
+  return (rockBeatsScissor(userInput, computerChoice) ||
+    paperBeatsRock(userInput, computerChoice) ||
+    scissorBeatsRock(userInput, computerChoice));
 }
 
 function startGame() {
-  const userGivenInput = userInput();
-  const computerGivenInput = computerInput();
-  console.log("\n   Computer choice was: " + computerGivenInput + "\n");
+  const userInput = getUserInput();
+  const computerChoice = getComputerInput(0, 3);
 
-  if (+userGivenInput === computerGivenInput) {
-    return "   Tie Play again!!!";
+  if (isDrawn(userInput, computerChoice)) {
+    return DRAWN_MSG;
   }
 
-  return gameResult(+userGivenInput, computerGivenInput);
-}
-
-function isPlayAgain() {
-  return confirm("   Would You Like To Play Again!!!");
-}
-
-function askRepeatGame() {
-  if (isPlayAgain()) {
-    rockPaperScissors();
+  if (isPlayerWon(userInput, computerChoice)) {
+    return PLAYER_WON_MSG;
   }
+
+  return COMPUTER_WON_MSG;
 }
 
-console.log(greet());
-function rockPaperScissors() {
-  console.log(options());
-  console.log(startGame());
-  askRepeatGame();
+function isOfferAccepted() {
+  return confirm("Would you like to play again?");
 }
 
-rockPaperScissors();
+function goodByeMsg() {
+  console.log("Good Bye!!!\n");
+}
+
+function rockPaperScissor() {
+  showWelcomeMsg();
+  console.log(getGameDescription());
+  let userWantToPlay = true;
+
+  while (userWantToPlay) {
+    const result = startGame();
+    console.log(result);
+    userWantToPlay = isOfferAccepted();
+  }
+
+  return goodByeMsg()
+}
+
+rockPaperScissor();
