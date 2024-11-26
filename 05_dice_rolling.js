@@ -62,8 +62,9 @@ function delay(time) {
 }
 
 function animation(faceValue) {
-  for (let index = 1; index <= 6; index++) {
-    console.log(creatDiceFace(index));
+  for (let index = 1; index <= 50; index++) {
+    const diceValue = (index % 6) + 1;
+    console.log(creatDiceFace(diceValue));
     delay(60);
     console.clear();
   }
