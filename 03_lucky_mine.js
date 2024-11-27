@@ -6,31 +6,8 @@ const PIPE_ICON = "┃";
 const BORDER_LENGTH = 20;
 const GRID_SEPARATOR = PIPE_ICON + "  ";
 const WINNING_POSITION = 20;
-const BOMB_LOCATION = "4,7";
+const BOMB_LOCATION = [2, 4, 9, 13, 15, 19];
 const DASH_LENGTH = 100;
-
-function isSubStr(string, subString) {
-
-  for (let index = 0; index < string.length; index++) {
-    if (createSubStr(string, index) === subString) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function createSubStr(string, index) {
-  let offset = index;
-  let slicedString = "";
-
-  while (string[offset] !== "," && offset < string.length) {
-    slicedString += string[offset];
-    offset++;
-  }
-
-  return slicedString;
-}
 
 function repeat(string, times) {
   if (times === 0) {
@@ -48,15 +25,17 @@ function hasPlayerReachedEnd(cellPosition, playerPosition) {
   return isEndPosition(cellPosition) && isEndPosition(playerPosition);
 }
 
-function isPlayerOnBombPosition(cellPosition, playerPosition) {
-  if (cellPosition !== playerPosition) {
-    return false;
-  }
-  return isSubStr(BOMB_LOCATION, playerPosition + "");
-}
-
 function isPlayerNotOnCurrentCell(cellPosition, playerPosition) {
   return cellPosition !== playerPosition;
+}
+
+function isPlayerOnBombPosition(diceNumber) {
+  for (let index = 0; index < BOMB_LOCATION.length; index++) {
+    if (BOMB_LOCATION[index] === diceNumber) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function createCell(cellPosition, playerPosition) {
@@ -70,7 +49,7 @@ function createCell(cellPosition, playerPosition) {
   if (isPlayerNotOnCurrentCell(cellPosition, playerPosition)) {
     return GROUND_ICON;
   }
-  if (isPlayerOnBombPosition(cellPosition, playerPosition)) {
+  if (isPlayerOnBombPosition(playerPosition)) {
     return BOMB_ICON;
   }
 
@@ -116,7 +95,7 @@ function safeMsg() {
 }
 
 function isInDanger(diceNumber) {
-  const isInBombPosition = isSubStr(BOMB_LOCATION, diceNumber + '');
+  const isInBombPosition = isPlayerOnBombPosition(diceNumber);
   isInBombPosition ? blastMsg() : safeMsg();
 
   return isInBombPosition;
@@ -174,30 +153,24 @@ function isOfferAccepted() {
   return confirm("Would you like to play again?");
 }
 
-function askToPlay() {
-  if (isOfferAccepted()) {
-    return diceGame();
-  }
-}
-
-function diceGame() {
+function startingMsg() {
   console.log("\n            let's start✊ \n");
-  console.log(startTheGame(0));
-  askToPlay();
 }
 
-function offerToPlay() {
-  if (confirm("Do you want to play The game:🤩?")) {
-    diceGame();
-    console.log("\n___________________________GAME OVER_________________________");
-  }
-}
-
-function guessTheNumberInRange() {
+function StartluckyMineBomb() {
   welcomemsg();
   console.log(gameInformationMsg());
   getMineField();
-  offerToPlay();
+
+  let askPlayerToPlay = true;
+
+  while (askPlayerToPlay) {
+    startingMsg()
+    console.log(startTheGame(0));
+    askPlayerToPlay = isOfferAccepted();
+  }
+
+  console.log("\n___________________________GAME OVER_________________________\n");
 }
 
-guessTheNumberInRange();
+StartluckyMineBomb();
